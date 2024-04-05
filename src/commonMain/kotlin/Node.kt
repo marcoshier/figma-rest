@@ -10,6 +10,18 @@ sealed class Node() {
     var name: String = ""
     var visible: Boolean = true
     var rotation: Double = 0.0
+    var blendMode: BlendMode? = null
+    var absoluteBoundingBox: org.openrndr.figma.rest.Rectangle? = null
+    var absoluteRenderBounds: org.openrndr.figma.rest.Rectangle? = null
+    var constraints: LayoutConstraint? = null
+    var fills: List<Paint> = emptyList()
+    var strokes: List<Paint> = emptyList()
+    var strokeWeight: Double = 0.0
+    var strokeAlign: String = ""
+    var strokeDashes: List<Double> = emptyList()
+    var effects: List<Effect> = emptyList()
+    var locked: Boolean = false
+    var preserveRatio: Boolean = false
 
     @Contextual
     var pluginData: Any? = null
@@ -36,6 +48,17 @@ sealed class Node() {
         override fun hashCode(): Int {
             return super.hashCode() * 31 + children.hashCode()
         }
+    }
+
+    /**
+     * Canvas node
+     */
+    @Serializable
+    @SerialName("BOOLEAN_OPERATION")
+    class BooleanOperation: Node() {
+        var children: List<Node> = emptyList()
+        var booleanOperation: String = ""
+
     }
 
     /**
@@ -89,31 +112,20 @@ sealed class Node() {
     open class Frame() : Node() {
 
         var children: List<Node> = emptyList()
-        var locked: Boolean = false
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var background: List<Paint> = emptyList()
 
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var backgroundColor: Color? = null
-        var fills: List<Paint> = emptyList()
-        var strokes: List<Paint> = emptyList()
-        var strokeWeight: Double = 0.0
-        var strokeAlign: String = ""
-        var strokeDashes: List<Double> = emptyList()
         var cornerRadius: Double = 0.0
         var rectangleCornerRadii: List<Double> = List(4) { cornerRadius }
         var cornerSmoothing: Double = 0.0
         var exportSettings: List<ExportSetting> = emptyList()
-        var blendMode: BlendMode? = null
-        var preserveRatio: Boolean = false
-        var constraints: LayoutConstraint? = null
         var layoutAlign: String = ""
         var transitionNodeID: String? = null
         var transitionDuration: Double? = null
         var transitionEasing: EasingType? = null
         var opacity: Double = 1.0
-        var absoluteBoundingBox: org.openrndr.figma.rest.Rectangle? = null
-        var absoluteRenderBounds: org.openrndr.figma.rest.Rectangle? = null
         var size: org.openrndr.figma.rest.Vector = Vector(0.0, 0.0)
         var minWidth: Double? = null
         var maxWidth: Double? = null
@@ -142,7 +154,6 @@ sealed class Node() {
         var strokesIncludedInLayoutBoolean: Boolean = false
         var layoutGrids: List<LayoutGrid> = emptyList()
         var overflowDirection: String = "NONE"
-        var effects: List<Effect> = emptyList()
         var isMask: Boolean = false
 
         @Deprecated("This property is deprecated; please use the maskType field instead (isMaskOutline=true corresponds to maskType=\"VECTOR\").")
@@ -283,32 +294,202 @@ sealed class Node() {
     /**
      * Group node
      */
+    @Serializable
     @SerialName("GROUP")
-    class Group : Frame() {
+    class Group : Node() {
+
+        var children: List<Node> = emptyList()
+        @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
+        var background: List<Paint> = emptyList()
+
+        @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
+        var backgroundColor: Color? = null
+        var cornerRadius: Double = 0.0
+        var rectangleCornerRadii: List<Double> = List(4) { cornerRadius }
+        var cornerSmoothing: Double = 0.0
+        var exportSettings: List<ExportSetting> = emptyList()
+        var layoutAlign: String = ""
+        var transitionNodeID: String? = null
+        var transitionDuration: Double? = null
+        var transitionEasing: EasingType? = null
+        var opacity: Double = 1.0
+        var size: org.openrndr.figma.rest.Vector = Vector(0.0, 0.0)
+        var minWidth: Double? = null
+        var maxWidth: Double? = null
+        var minHeight: Double? = null
+        var maxHeight: Double? = null
+        var relativeTransform: Transform = emptyList()
+        var clipsContent: Boolean = false
+        var layoutMode: String = "NONE"
+        var layoutSizingHorizontal: String = ""
+        var layoutSizingVertical: String = ""
+        var layoutWrap: String = "NO_WRAP"
+        var primaryAxisSizingMode: String = "AUTO"
+        var primaryAxisAlignItems: String = "MIN"
+        var counterAxisAlignItems: String = "MIN"
+        var counterAxisAlignContent: String = "AUTO"
+        var paddingLeft: Double = 0.0
+        var paddingRight: Double = 0.0
+        var paddingTop: Double = 0.0
+        var paddingBottom: Double = 0.0
+        var horizontalPadding: Double = 0.0
+        var verticalPadding: Double = 0.0
+        var itemSpacing: Double = 0.0
+        var counterAxisSpacing: Double = 0.0
+        var layoutPositioning: String = "AUTO"
+        var itemReverseZIndex: Boolean = false
+        var strokesIncludedInLayoutBoolean: Boolean = false
+        var layoutGrids: List<LayoutGrid> = emptyList()
+        var overflowDirection: String = "NONE"
+        var isMask: Boolean = false
+
+        @Deprecated("This property is deprecated; please use the maskType field instead (isMaskOutline=true corresponds to maskType=\"VECTOR\").")
+        var isMaskOutline: Boolean = false
+        var maskType: String? = null
+        var styles: Map<StyleType, String> = emptyMap()
+
+
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
             if (!super.equals(other)) return false
+
+            other as Frame
+
+            if (children != other.children) return false
+            if (locked != other.locked) return false
+            if (background != other.background) return false
+            if (backgroundColor != other.backgroundColor) return false
+            if (fills != other.fills) return false
+            if (strokes != other.strokes) return false
+            if (strokeWeight != other.strokeWeight) return false
+            if (strokeAlign != other.strokeAlign) return false
+            if (strokeDashes != other.strokeDashes) return false
+            if (cornerRadius != other.cornerRadius) return false
+            if (rectangleCornerRadii != other.rectangleCornerRadii) return false
+            if (cornerSmoothing != other.cornerSmoothing) return false
+            if (exportSettings != other.exportSettings) return false
+            if (blendMode != other.blendMode) return false
+            if (preserveRatio != other.preserveRatio) return false
+            if (constraints != other.constraints) return false
+            if (layoutAlign != other.layoutAlign) return false
+            if (transitionNodeID != other.transitionNodeID) return false
+            if (transitionDuration != other.transitionDuration) return false
+            if (transitionEasing != other.transitionEasing) return false
+            if (opacity != other.opacity) return false
+            if (absoluteBoundingBox != other.absoluteBoundingBox) return false
+            if (absoluteRenderBounds != other.absoluteRenderBounds) return false
+            if (size != other.size) return false
+            if (minWidth != other.minWidth) return false
+            if (maxWidth != other.maxWidth) return false
+            if (minHeight != other.minHeight) return false
+            if (maxHeight != other.maxHeight) return false
+            if (relativeTransform != other.relativeTransform) return false
+            if (clipsContent != other.clipsContent) return false
+            if (layoutMode != other.layoutMode) return false
+            if (layoutSizingHorizontal != other.layoutSizingHorizontal) return false
+            if (layoutSizingVertical != other.layoutSizingVertical) return false
+            if (layoutWrap != other.layoutWrap) return false
+            if (primaryAxisSizingMode != other.primaryAxisSizingMode) return false
+            if (primaryAxisAlignItems != other.primaryAxisAlignItems) return false
+            if (counterAxisAlignItems != other.counterAxisAlignItems) return false
+            if (counterAxisAlignContent != other.counterAxisAlignContent) return false
+            if (paddingLeft != other.paddingLeft) return false
+            if (paddingRight != other.paddingRight) return false
+            if (paddingTop != other.paddingTop) return false
+            if (paddingBottom != other.paddingBottom) return false
+            if (horizontalPadding != other.horizontalPadding) return false
+            if (verticalPadding != other.verticalPadding) return false
+            if (itemSpacing != other.itemSpacing) return false
+            if (counterAxisSpacing != other.counterAxisSpacing) return false
+            if (layoutPositioning != other.layoutPositioning) return false
+            if (itemReverseZIndex != other.itemReverseZIndex) return false
+            if (strokesIncludedInLayoutBoolean != other.strokesIncludedInLayoutBoolean) return false
+            if (layoutGrids != other.layoutGrids) return false
+            if (overflowDirection != other.overflowDirection) return false
+            if (effects != other.effects) return false
+            if (isMask != other.isMask) return false
+            if (isMaskOutline != other.isMaskOutline) return false
+            if (maskType != other.maskType) return false
+            if (styles != other.styles) return false
+
             return true
+        }
+
+        override fun hashCode(): Int {
+            var result = super.hashCode()
+            result = 31 * result + children.hashCode()
+            result = 31 * result + locked.hashCode()
+            result = 31 * result + (background?.hashCode() ?: 0)
+            result = 31 * result + (backgroundColor?.hashCode() ?: 0)
+            result = 31 * result + fills.hashCode()
+            result = 31 * result + strokes.hashCode()
+            result = 31 * result + strokeWeight.hashCode()
+            result = 31 * result + strokeAlign.hashCode()
+            result = 31 * result + strokeDashes.hashCode()
+            result = 31 * result + cornerRadius.hashCode()
+            result = 31 * result + rectangleCornerRadii.hashCode()
+            result = 31 * result + cornerSmoothing.hashCode()
+            result = 31 * result + exportSettings.hashCode()
+            result = 31 * result + (blendMode?.hashCode() ?: 0)
+            result = 31 * result + preserveRatio.hashCode()
+            result = 31 * result + (constraints?.hashCode() ?: 0)
+            result = 31 * result + layoutAlign.hashCode()
+            result = 31 * result + (transitionNodeID?.hashCode() ?: 0)
+            result = 31 * result + (transitionDuration?.hashCode() ?: 0)
+            result = 31 * result + (transitionEasing?.hashCode() ?: 0)
+            result = 31 * result + opacity.hashCode()
+            result = 31 * result + (absoluteBoundingBox?.hashCode() ?: 0)
+            result = 31 * result + (absoluteRenderBounds?.hashCode() ?: 0)
+            result = 31 * result + size.hashCode()
+            result = 31 * result + (minWidth?.hashCode() ?: 0)
+            result = 31 * result + (maxWidth?.hashCode() ?: 0)
+            result = 31 * result + (minHeight?.hashCode() ?: 0)
+            result = 31 * result + (maxHeight?.hashCode() ?: 0)
+            result = 31 * result + relativeTransform.hashCode()
+            result = 31 * result + clipsContent.hashCode()
+            result = 31 * result + layoutMode.hashCode()
+            result = 31 * result + layoutSizingHorizontal.hashCode()
+            result = 31 * result + layoutSizingVertical.hashCode()
+            result = 31 * result + layoutWrap.hashCode()
+            result = 31 * result + primaryAxisSizingMode.hashCode()
+            result = 31 * result + primaryAxisAlignItems.hashCode()
+            result = 31 * result + counterAxisAlignItems.hashCode()
+            result = 31 * result + counterAxisAlignContent.hashCode()
+            result = 31 * result + paddingLeft.hashCode()
+            result = 31 * result + paddingRight.hashCode()
+            result = 31 * result + paddingTop.hashCode()
+            result = 31 * result + paddingBottom.hashCode()
+            result = 31 * result + horizontalPadding.hashCode()
+            result = 31 * result + verticalPadding.hashCode()
+            result = 31 * result + itemSpacing.hashCode()
+            result = 31 * result + counterAxisSpacing.hashCode()
+            result = 31 * result + layoutPositioning.hashCode()
+            result = 31 * result + itemReverseZIndex.hashCode()
+            result = 31 * result + strokesIncludedInLayoutBoolean.hashCode()
+            result = 31 * result + layoutGrids.hashCode()
+            result = 31 * result + overflowDirection.hashCode()
+            result = 31 * result + effects.hashCode()
+            result = 31 * result + isMask.hashCode()
+            result = 31 * result + isMaskOutline.hashCode()
+            result = 31 * result + (maskType?.hashCode() ?: 0)
+            result = 31 * result + styles.hashCode()
+            return result
         }
     }
 
     /**
      * Section node
      */
+    @Serializable
     @SerialName("SECTION")
     class Section : Node() {
         var sectionContentsHidden: Boolean = false
 
         @Contextual
         var devStatus: Any? = null
-        var fills: List<Paint> = emptyList()
-        var strokes: List<Paint> = emptyList()
-        var strokeWeight: Double = 0.0
-        var strokeAlign: String = ""
         var children: List<Node> = emptyList()
-        var absoluteBoundingBox: org.openrndr.figma.rest.Rectangle? = null
-        var absoluteRenderBounds: org.openrndr.figma.rest.Rectangle? = null
+
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -346,35 +527,24 @@ sealed class Node() {
 
     @Serializable
     sealed class VectorBase : Node() {
-        var locked: Boolean = false
         var exportSettings: List<ExportSetting> = emptyList()
-        var blendMode: BlendMode = ""
-        var preserveRatio: Boolean = true
+        val boundVariables: Map<String, List<VariableAlias>> = emptyMap()
         var layoutAlign: String = ""
         var layoutGrow: Double = 0.0
-        var constraints: LayoutConstraint? = null
         var transitionNodeID: String? = null
         var transitionDuration: Double? = null
         var transitionEasing: EasingType? = null
         var opacity: Double = 1.0
-        var absoluteBoundingBox: org.openrndr.figma.rest.Rectangle? = null
-        var absoluteRenderBounds: org.openrndr.figma.rest.Rectangle? = null
-        var effects: List<Effect> = emptyList()
         var size: org.openrndr.figma.rest.Vector = Vector(0.0, 0.0)
         var relativeTransform: Transform = emptyList()
         var isMask: Boolean = false
-        var fills: List<Paint> = emptyList()
         var fillGeometry: Path? = null
-        var fillOverrideTable: Map<Int, PaintOverride> = emptyMap()
-        var strokes: List<Paint> = emptyList()
-        var strokeWeight: Double = 0.0
+        var fillOverrideTable: Map<Int, PaintOverride?> = emptyMap()
         var individualStrokeWeights: StrokeWeights? = null
         var strokeCap: String = "NONE"
         var strokeJoin: String = "MITER"
-        var strokeDashes: List<Double> = emptyList()
         var strokeMiterAngle: Double = 28.96
         var strokeGeometry: List<Path> = emptyList()
-        var strokeAlign: String = ""
         var styles: Map<StyleType, String> = emptyMap()
     }
 
@@ -522,7 +692,7 @@ sealed class Node() {
         val relativeTransform: Transform = emptyList(),
 
 
-    ) {
+        ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
