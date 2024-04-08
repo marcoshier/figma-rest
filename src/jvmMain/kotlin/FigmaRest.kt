@@ -2,8 +2,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 import java.io.IOException
+import java.time.Duration
 
-private val client = OkHttpClient()
+private val client = OkHttpClient().apply {
+    newBuilder().apply {
+        connectTimeout(Duration.ofSeconds(30))
+        readTimeout(Duration.ofSeconds(30))
+    }
+}
 
 fun okFetcher(key: String): (String) -> String {
     return fun(url: String): String {
