@@ -8,14 +8,7 @@ import kotlinx.serialization.Serializable
  * @param Type of hyperlink
  */
 @Serializable
-sealed interface Hyperlink {
-
-    @Serializable
-    @SerialName("URL")
-    data class Url(val url: String)
-
-
-    @Serializable
-    @SerialName("NODE")
-    data class Node(val nodeID: String)
-}
+data class Hyperlink(
+    val type: String,
+    val url: String
+)
