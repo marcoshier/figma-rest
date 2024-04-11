@@ -22,6 +22,11 @@ sealed class Node() {
     var effects: List<Effect> = emptyList()
     var locked: Boolean = false
     var preserveRatio: Boolean = false
+    var cornerRadius: Double = 0.0
+    var rectangleCornerRadii: List<Double> = List(4) { cornerRadius }
+    var cornerSmoothing = 0.0
+    var layoutSizingHorizontal: String = ""
+    var layoutSizingVertical: String = ""
 
     @Contextual
     var pluginData: Any? = null
@@ -117,9 +122,6 @@ sealed class Node() {
 
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var backgroundColor: Color? = null
-        var cornerRadius: Double = 0.0
-        var rectangleCornerRadii: List<Double> = List(4) { cornerRadius }
-        var cornerSmoothing: Double = 0.0
         var exportSettings: List<ExportSetting> = emptyList()
         var layoutAlign: String = ""
         var transitionNodeID: String? = null
@@ -134,13 +136,12 @@ sealed class Node() {
         var relativeTransform: Transform = emptyList()
         var clipsContent: Boolean = false
         var layoutMode: String = "NONE"
-        var layoutSizingHorizontal: String = ""
-        var layoutSizingVertical: String = ""
         var layoutWrap: String = "NO_WRAP"
         var primaryAxisSizingMode: String = "AUTO"
         var primaryAxisAlignItems: String = "MIN"
         var counterAxisAlignItems: String = "MIN"
         var counterAxisAlignContent: String = "AUTO"
+        var counterAxisSizingMode: String = "AUTO"
         var paddingLeft: Double = 0.0
         var paddingRight: Double = 0.0
         var paddingTop: Double = 0.0
@@ -304,9 +305,6 @@ sealed class Node() {
 
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var backgroundColor: Color? = null
-        var cornerRadius: Double = 0.0
-        var rectangleCornerRadii: List<Double> = List(4) { cornerRadius }
-        var cornerSmoothing: Double = 0.0
         var exportSettings: List<ExportSetting> = emptyList()
         var layoutAlign: String = ""
         var transitionNodeID: String? = null
@@ -321,8 +319,6 @@ sealed class Node() {
         var relativeTransform: Transform = emptyList()
         var clipsContent: Boolean = false
         var layoutMode: String = "NONE"
-        var layoutSizingHorizontal: String = ""
-        var layoutSizingVertical: String = ""
         var layoutWrap: String = "NO_WRAP"
         var primaryAxisSizingMode: String = "AUTO"
         var primaryAxisAlignItems: String = "MIN"
@@ -616,9 +612,6 @@ sealed class Node() {
     @Serializable
     @SerialName("RECTANGLE")
     class Rectangle: VectorBase() {
-        var cornerRadius: Double = 0.0
-        var rectangleCornerRadii = List(4) { cornerRadius }
-        var cornerSmoothing = 0.0
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false

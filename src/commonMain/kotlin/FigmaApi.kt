@@ -24,7 +24,7 @@ class FigmaApi(val fetcher: (String) -> String) {
         val qs = listOfNotNull(qVersion, qIds, qDepth, qGeometry, qPluginData, qBranchData).joinToString("&")
         val q = if (qs.isNotBlank()) "?$qs" else ""
         val result = fetcher("/v1/files/$key$q")
-        println(result)
+        //java.io.File("data/result.json").writeText(result)
         return Json.decodeFromString<Files>(result)
     }
 
