@@ -27,6 +27,7 @@ sealed class Node() {
     var cornerSmoothing = 0.0
     var layoutSizingHorizontal: String = ""
     var layoutSizingVertical: String = ""
+    var exportSettings: List<ExportSetting> = emptyList()
 
     @Contextual
     var pluginData: Any? = null
@@ -79,7 +80,6 @@ sealed class Node() {
         var prototypeStartNodeID: String? = null
         var flowStartingPoints: List<FlowStartingPoint> = emptyList()
         var prototypeDevice: PrototypeDevice? = null
-        var exportSettings: List<ExportSetting> = emptyList()
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -122,7 +122,6 @@ sealed class Node() {
 
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var backgroundColor: Color? = null
-        var exportSettings: List<ExportSetting> = emptyList()
         var layoutAlign: String = ""
         var transitionNodeID: String? = null
         var transitionDuration: Double? = null
@@ -305,7 +304,6 @@ sealed class Node() {
 
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var backgroundColor: Color? = null
-        var exportSettings: List<ExportSetting> = emptyList()
         var layoutAlign: String = ""
         var transitionNodeID: String? = null
         var transitionDuration: Double? = null
@@ -523,7 +521,6 @@ sealed class Node() {
 
     @Serializable
     sealed class VectorBase : Node() {
-        var exportSettings: List<ExportSetting> = emptyList()
         val boundVariables: Map<String, List<VariableAlias>> = emptyMap()
         var layoutAlign: String = ""
         var layoutGrow: Double = 0.0
