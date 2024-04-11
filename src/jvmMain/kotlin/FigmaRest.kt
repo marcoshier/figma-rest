@@ -4,7 +4,7 @@ import java.io.File
 import java.io.IOException
 import java.time.Duration
 
-fun okFetcher(key: String, timeoutInSeconds: Long = 30): (String) -> String {
+fun okFetcher(key: String, timeoutInSeconds: Long = 60): (String) -> String {
     val client = OkHttpClient.Builder()
         .connectTimeout(Duration.ofSeconds(timeoutInSeconds))
         .readTimeout(Duration.ofSeconds(timeoutInSeconds))
@@ -25,7 +25,7 @@ fun okFetcher(key: String, timeoutInSeconds: Long = 30): (String) -> String {
     }
 }
 
-fun okFileDownloader(key: String, timeoutInSeconds: Long = 30): (String, File) -> Unit {
+fun okFileDownloader(key: String, timeoutInSeconds: Long = 60): (String, File) -> Unit {
     val client = OkHttpClient.Builder()
         .connectTimeout(Duration.ofSeconds(timeoutInSeconds))
         .readTimeout(Duration.ofSeconds(timeoutInSeconds))
