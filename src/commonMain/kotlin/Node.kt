@@ -29,8 +29,8 @@ sealed class Node() {
     var layoutSizingVertical: String = ""
     var exportSettings: List<ExportSetting> = emptyList()
     var layoutGrow: Double = 0.0
-  
-  
+    var maskType: String? = null
+
     @Contextual
     var pluginData: Any? = null
 
@@ -160,7 +160,6 @@ sealed class Node() {
 
         @Deprecated("This property is deprecated; please use the maskType field instead (isMaskOutline=true corresponds to maskType=\"VECTOR\").")
         var isMaskOutline: Boolean = false
-        var maskType: String? = null
         var styles: Map<StyleType, String> = emptyMap()
 
 
@@ -341,7 +340,6 @@ sealed class Node() {
 
         @Deprecated("This property is deprecated; please use the maskType field instead (isMaskOutline=true corresponds to maskType=\"VECTOR\").")
         var isMaskOutline: Boolean = false
-        var maskType: String? = null
         var styles: Map<StyleType, String> = emptyMap()
 
 
