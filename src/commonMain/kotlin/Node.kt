@@ -29,7 +29,8 @@ sealed class Node() {
     var layoutSizingVertical: String = ""
     var exportSettings: List<ExportSetting> = emptyList()
     var layoutGrow: Double = 0.0
-
+  
+  
     @Contextual
     var pluginData: Any? = null
 
