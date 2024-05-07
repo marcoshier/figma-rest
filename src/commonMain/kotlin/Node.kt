@@ -28,6 +28,7 @@ sealed class Node() {
     var layoutSizingHorizontal: String = ""
     var layoutSizingVertical: String = ""
     var exportSettings: List<ExportSetting> = emptyList()
+    var layoutGrow: Double = 0.0
 
     @Contextual
     var pluginData: Any? = null
@@ -523,7 +524,6 @@ sealed class Node() {
     sealed class VectorBase : Node() {
         val boundVariables: Map<String, List<VariableAlias>> = emptyMap()
         var layoutAlign: String = ""
-        var layoutGrow: Double = 0.0
         var transitionNodeID: String? = null
         var transitionDuration: Double? = null
         var transitionEasing: EasingType? = null
