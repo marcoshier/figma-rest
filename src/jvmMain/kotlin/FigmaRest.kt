@@ -4,20 +4,18 @@ import java.io.File
 import java.io.IOException
 import java.time.Duration
 
-private val client = OkHttpClient().apply {
-    newBuilder().apply {
-        connectTimeout(Duration.ofSeconds(30))
-        readTimeout(Duration.ofSeconds(30))
-    }
-}
+fun okFetcher(key: String, timeoutInSeconds: Long = 60): (String) -> String {
+    val client = OkHttpClient.Builder()
+        .connectTimeout(Duration.ofSeconds(timeoutInSeconds))
+        .readTimeout(Duration.ofSeconds(timeoutInSeconds))
+        .build()
 
-fun okFetcher(key: String): (String) -> String {
+
     return fun(url: String): String {
         val request = Request.Builder()
             .url("https://api.figma.com$url")
             .addHeader("X-Figma-Token", key)
             .build()
-
 
         val body = client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
@@ -27,7 +25,12 @@ fun okFetcher(key: String): (String) -> String {
     }
 }
 
-fun okFileDownloader(key: String): (String, File) -> Unit {
+fun okFileDownloader(key: String, timeoutInSeconds: Long = 60): (String, File) -> Unit {
+    val client = OkHttpClient.Builder()
+        .connectTimeout(Duration.ofSeconds(timeoutInSeconds))
+        .readTimeout(Duration.ofSeconds(timeoutInSeconds))
+        .build()
+
     return fun (url: String, targetFile: java.io.File) {
         println("fetching '${targetFile.path}' from '$url'")
 
