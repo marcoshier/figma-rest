@@ -30,6 +30,7 @@ sealed class Node() {
     var exportSettings: List<ExportSetting> = emptyList()
     var layoutGrow: Double = 0.0
     var maskType: String? = null
+    var interactions: List<String?> = listOf()
 
     @Contextual
     var pluginData: Any? = null
