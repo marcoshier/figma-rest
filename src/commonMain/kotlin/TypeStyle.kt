@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TypeStyle(
     val fontFamily: String,
-    val fontPostScriptName: String,
+    val fontPostScriptName: String? = null,
     val paragraphSpacing: Double = 0.0,
     val paragraphIndent: Double = 0.0,
     val listSpacing: Double = 0.0,
