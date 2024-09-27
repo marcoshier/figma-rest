@@ -30,6 +30,6 @@ data class LayoutGrid(
     val gutterSize: Double,
     val offset: Double,
     val count: Int,
-    val boundVariables: Map<String, VariableAlias>
+    val boundVariables: Map<String, VariableAlias> = mapOf()
 ) {
 }

@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
  * @param inheritedFillStyleId ID of style node, if any, that this inherits fill data from
  */
 @Serializable
-data class PaintOverride(val fills: List<Paint>, val inheritedFillStyleId: String) {
+data class PaintOverride(val fills: List<Paint>, val inheritedFillStyleId: String? = null) {
 }
