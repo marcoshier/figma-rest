@@ -45,8 +45,8 @@ sealed class Node() {
      */
     @Serializable
     @SerialName("DOCUMENT")
-    class Document : Node() {
-        var children: List<Node> = emptyList()
+    class Document : Node(), ParentNode {
+        override var children: List<Node> = emptyList()
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -75,8 +75,8 @@ sealed class Node() {
      */
     @Serializable
     @SerialName("CANVAS")
-    class Canvas() : Node() {
-        var children: List<Node> = emptyList()
+    class Canvas() : Node(), ParentNode {
+        override var children: List<Node> = emptyList()
         var backgroundColor: Color = Color(0.0, 0.0, 0.0, 0.0)
 
         @Deprecated("This is deprecated with the introduction of multiple flows. Please use the flowStartingPoints field.")
@@ -117,9 +117,9 @@ sealed class Node() {
      */
     @Serializable
     @SerialName("FRAME")
-    open class Frame() : Node() {
+    open class Frame() : Node(), ParentNode {
 
-        var children: List<Node> = emptyList()
+        override var children: List<Node> = emptyList()
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var background: List<Paint> = emptyList()
 
@@ -298,9 +298,9 @@ sealed class Node() {
      */
     @Serializable
     @SerialName("GROUP")
-    class Group : Node() {
+    class Group : Node(), ParentNode {
 
-        var children: List<Node> = emptyList()
+        override var children: List<Node> = emptyList()
         @Deprecated("This is deprecated, as backgrounds for frames are now in the fills field.")
         var background: List<Paint> = emptyList()
 
@@ -478,12 +478,12 @@ sealed class Node() {
      */
     @Serializable
     @SerialName("SECTION")
-    class Section : Node() {
+    class Section : Node(), ParentNode {
         var sectionContentsHidden: Boolean = false
 
         @Contextual
         var devStatus: Any? = null
-        var children: List<Node> = emptyList()
+        override var children: List<Node> = emptyList()
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
