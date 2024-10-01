@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TypeStyle(
-    val fontFamily: String,
+    val fontFamily: String = "",
     val fontPostScriptName: String? = null,
     val paragraphSpacing: Double = 0.0,
     val paragraphIndent: Double = 0.0,
     val listSpacing: Double = 0.0,
     val italic: Boolean? = null,
-    val fontWeight: Double,
+    val fontWeight: Double = 0.0,
     val fontSize: Double? = null,
     val textCase: String = "ORIGINAL",
     val textDecoration: String = "NONE",
@@ -22,7 +22,7 @@ data class TypeStyle(
     val maxLines: Double? = null,
     val textAlignHorizontal: String = "LEFT",
     val textAlignVertical: String? = null,
-    val letterSpacing: Double,
+    val letterSpacing: Double = 0.0,
     val fills: List<Paint> = emptyList(),
     val hyperlink: Hyperlink? = null,
     val openTypeFlags: Map<String, Double> = emptyMap(),
