@@ -7,6 +7,10 @@ class FigmaApi(val fetcher: (String) -> String) {
     fun teamProjects(teamId: String) = Json.decodeFromString<TeamProjects>(fetcher("/v1/teams/$teamId/projects"))
     fun projectFiles(projectId: String) = Json.decodeFromString<ProjectFiles>(fetcher("/v1/projects/$projectId/files"))
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+
     fun file(
         key: String, version: String? = null, ids: List<String> = emptyList(), depth: Int? = null,
         geometry: String? = null,
@@ -24,7 +28,7 @@ class FigmaApi(val fetcher: (String) -> String) {
         val qs = listOfNotNull(qVersion, qIds, qDepth, qGeometry, qPluginData, qBranchData).joinToString("&")
         val q = if (qs.isNotBlank()) "?$qs" else ""
         val result = fetcher("/v1/files/$key$q")
-        return Json.decodeFromString<Files>(result)
+        return json.decodeFromString<Files>(result)
     }
 
     fun images(
